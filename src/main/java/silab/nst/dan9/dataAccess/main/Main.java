@@ -24,12 +24,14 @@ public class Main {
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         Main main = context.getBean(Main.class);
 
-        main.saveUserInRepository();
+//        main.saveUserInRepository();
 
-        main.findUserById(10l);
+//        main.findUserById(18l);
 
-        main.deleteUserFromRepository(16l);
+//        main.deleteUserFromRepository(21l);
 
+
+        System.out.println("\n\n\nAll Users: => ");
         main.getAllUsersFromRepository();
     }
 
@@ -38,6 +40,7 @@ public class Main {
             User user = userService.findUserByID(id);
             if (user != null) {
                 userService.delete(user);
+                System.out.println("User deleted successfully.");
             } else {
                 System.out.println("User doesn't exist!");
             }
@@ -50,6 +53,7 @@ public class Main {
         try {
             User user = userService.findUserByID(id);
             if (user != null) {
+                System.out.println("User found => ");
                 System.out.println(user);
             } else {
                 System.out.println("User doesn't exist!");
@@ -61,9 +65,10 @@ public class Main {
     }
 
     private void saveUserInRepository() {
-        User user = new User("Zika", "Zikic", "zika", "zika");
+        User user = new User("John", "Smith", "john", "john");
         try {
             System.out.println(userService.add(user));
+            System.out.println("User inserted successfully.");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -25,8 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) throws Exception {
-//        update specific user
-        return null;
+        return (User) userRepository.update(user);
     }
 
     @Override

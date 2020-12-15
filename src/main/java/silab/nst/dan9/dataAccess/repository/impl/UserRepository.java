@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import silab.nst.dan9.dataAccess.domain.User;
 import silab.nst.dan9.dataAccess.repository.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
