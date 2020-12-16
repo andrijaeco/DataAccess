@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import silab.nst.dan9.dataAccess.domain.User;
 import silab.nst.dan9.dataAccess.repository.Repository;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -34,7 +33,9 @@ public class UserRepository implements Repository<User, Long> {
 
     @Override
     public User update(User user) throws Exception {
-        return null;
+        jdbcTemplate.update("update user set fistName = ?, lastName = ?, username = ?, password = ? where id = ?",
+                user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getId());
+        return user;
     }
 
     @Override

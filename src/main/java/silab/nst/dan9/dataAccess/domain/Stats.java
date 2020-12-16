@@ -5,12 +5,12 @@ import java.util.Objects;
 public class Stats {
 
     String key;
-    String value;
+    Long value;
 
     public Stats() {
     }
 
-    public Stats(String key, String value) {
+    public Stats(String key, Long value) {
         this.key = key;
         this.value = value;
     }
@@ -23,11 +23,11 @@ public class Stats {
         this.key = key;
     }
 
-    public String getValue() {
+    public Long getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Long value) {
         this.value = value;
     }
 
@@ -36,7 +36,8 @@ public class Stats {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Stats stats = (Stats) o;
-        return key.equals(stats.key) && value.equals(stats.value);
+        return key.equals(stats.key) &&
+                value.equals(stats.value);
     }
 
     @Override

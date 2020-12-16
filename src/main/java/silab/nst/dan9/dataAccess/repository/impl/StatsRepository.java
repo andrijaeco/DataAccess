@@ -1,34 +1,53 @@
 package silab.nst.dan9.dataAccess.repository.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import silab.nst.dan9.dataAccess.domain.Stats;
-import silab.nst.dan9.dataAccess.repository.Repository;
+import silab.nst.dan9.dataAccess.repository.UpdateStatsRepository;
+import silab.nst.dan9.dataAccess.repository.stats.operation.StatsOperation;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-public class StatsRepository implements Repository<Stats, Long> {
+@Component
+@Transactional(propagation = Propagation.MANDATORY)
+public class StatsRepository implements UpdateStatsRepository<Stats, StatsOperation> {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+
     @Override
-    public Stats add(Stats stats) throws Exception {
-        return null;
+    public Stats update(Stats stats, StatsOperation operation) throws Exception {
+        switch (operation) {
+            case INSERT:
+                jdbcTemplate.update("update stats set numberOfEntities = " +
+                        "(select numberOfEntities from stats where tableName = ?) + 1 " +
+                        "where tableName = ?", stats.getKey(), stats.getKey());
+                break;
+            case DELETE:
+                jdbcTemplate.update("update stats set numberOfEntities = " +
+                        "(select numberOfEntities from stats where tableName = ?) - 1 " +
+                        "where tableName = ?", stats.getKey(), stats.getKey());
+                break;
+        }
+        return stats;
     }
 
     @Override
-    public Stats update(Stats stats) throws Exception {
-        return null;
+    public List<Stats> getAllStats() {
+        return jdbcTemplate.query("select * from stats", new StatsMapper());
     }
 
-    @Override
-    public Stats delete(Stats stats) throws Exception {
-        return null;
+    class StatsMapper implements RowMapper<Stats> {
+        @Override
+        public Stats mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return new Stats(resultSet.getString("tableName"), resultSet.getLong("numberOfEntities"));
+        }
     }
-
-    @Override
-    public List<Stats> getAll() {
-        return null;
-    }
-
-    @Override
-    public Stats findById(Long aLong) throws Exception {
-        return null;
-    }
-
 }
